@@ -1454,9 +1454,9 @@ p { color: var(--gray-600); line-height: 1.8; }
   .hamburger { display: flex; }
 
   .hero-content { grid-template-columns: 1fr; gap: 32px; padding-top: 40px; }
-  /* Move the image above the text on mobile */
-  .hero-image-wrapper { order: -1; aspect-ratio: 4/3; max-height: 300px; }
-  .hero-text { order: 1; }
+  /* Hide the hero image on mobile for a cleaner layout */
+  .hero-image-wrapper { display: none; }
+  .hero-text { order: unset; }
   .hero .hero-ctas { flex-direction: column; }
 
   .trust-bar-inner { flex-direction: column; align-items: flex-start; }
