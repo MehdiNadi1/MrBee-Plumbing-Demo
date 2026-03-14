@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <style>
+    /* Critical CSS to prevent broken layout if main CSS fails to load */
+    :root { --navy: #0d1b2e; --gold: #c8922a; --white: #ffffff; }
+    body { margin: 0; font-family: sans-serif; }
+    .site-header { position: absolute; top: 0; width: 100%; z-index: 1000; }
+    .hero { background: var(--navy); min-height: 400px; padding: 100px 20px; color: white; display:flex; flex-direction:column; align-items:center; text-align:center; }
+    .hero-title { font-size: 2.5rem; margin-bottom: 20px; }
+    .btn { display: inline-block; padding: 12px 24px; border-radius: 8px; font-weight: bold; text-decoration: none; }
+    .btn-primary { background: var(--gold); color: var(--navy); }
+    .logo-icon svg { width: 48px !important; height: 48px !important; }
+    img { max-width: 100%; height: auto; }
+  </style>
+  <!-- Schema Markup -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Plumber",
+    "name": "Mr Bee Plumbing",
+    "url": "https://mrbeeplumbing.co.uk",
+    "telephone": "07810173271",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "429 Chester Road",
+      "addressLocality": "Castle Bromwich",
+      "addressRegion": "Birmingham",
+      "postalCode": "B36 0JJ",
+      "addressCountry": "GB"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 52.504,
+      "longitude": -1.795
+    },
+    "areaServed": ["Birmingham", "West Midlands", "Castle Bromwich", "Solihull", "Sutton Coldfield"],
+    "description": "Family-run plumbing and heating services in Birmingham and the West Midlands. Domestic and light commercial plumbing, boiler installation, central heating, repairs and more.",
+    "priceRange": "££",
+    "openingHours": "Mo-Fr 08:00-18:00",
+    "sameAs": ["https://mrbeeplumbing.co.uk"]
+  }
+  </script>
+</head>
+<body>
+
+<!-- ===== STICKY HEADER ===== -->
+<header class="site-header" id="site-header">
+  <div class="header-top">
+    <div class="container">
+      <span>📍 Serving Birmingham & West Midlands from Castle Bromwich B36 0JJ</span>
+      <span>Call us: <a href="tel:07810173271">07810 173271</a></span>
+    </div>
+  </div>
+  <div class="header-main">
+    <div class="header-inner">
+      <a href="index.html" class="site-logo" aria-label="Mr Bee Plumbing Home">
+        <div class="logo-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 28px; height: 28px; display: block;">
+            <polygon points="14,2 26,8.5 26,21.5 14,28 2,21.5 2,8.5" fill="none" stroke="#c8922a" stroke-width="1.5"/>
+            <polygon points="14,6 22,10.5 22,19.5 14,24 6,19.5 6,10.5" fill="rgba(200,146,42,0.15)" stroke="#c8922a" stroke-width="1"/>
+            <text x="14" y="18" text-anchor="middle" fill="#c8922a" font-size="10" font-weight="bold" font-family="Arial">B</text>
+          </svg>
+        </div>
+        <div class="logo-text">
+          <span class="logo-name">Mr Bee Plumbing</span>
+          <span class="logo-tagline">Birmingham & West Midlands</span>
+        </div>
+      </a>
+      <nav class="site-nav" aria-label="Main navigation">
+        <a href="index.html" class="active">Home</a>
+        <a href="about.html">About</a>
+        <a href="services.html">Services</a>
+        <a href="service-areas.html">Areas</a>
+        <a href="reviews.html">Reviews</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+      <div class="nav-cta-group">
+        <a href="tel:07810173271" class="nav-phone" aria-label="Call 07810 173271">
+          <div class="nav-phone-icon">📞</div>
+          <span>07810 173271</span>
+        </a>
+        <a href="contact.html" class="btn btn-primary btn-sm">Get a Quote</a>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobile-menu" role="dialog" aria-modal="true" aria-label="Navigation">
+  <button class="mobile-menu-close" id="mobile-menu-close" aria-label="Close menu">✕</button>
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+  <a href="services.html">Services</a>
+  <a href="service-areas.html">Areas</a>
+  <a href="reviews.html">Reviews</a>
+  <a href="contact.html">Contact</a>
+  <a href="tel:07810173271" class="mobile-menu-phone">📞 07810 173271</a>
+</div>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-bg-pattern"></div>
+  <div class="hero-hex-grid"></div>
+  <div class="hero-content">
+    <div class="hero-text">
+      <div class="hero-badge">
+        <svg viewBox="0 0 14 14" fill="currentColor"><polygon points="7,1 13,4.5 13,11.5 7,15 1,11.5 1,4.5"/></svg>
+        Family-Run Local Business
+      </div>
+      <h1 class="hero-title">
+        Trusted Local Plumber in <span class="accent">Birmingham</span> &amp; West Midlands
+      </h1>
+      <p class="hero-subtitle">
+        Professional plumbing and heating services for homes and light commercial properties, delivered with clear communication, tidy workmanship, and reliable service.
+      </p>
+      <div class="hero-ctas">
+        <a href="tel:07810173271" class="btn btn-primary btn-lg" id="hero-call-btn">
+          📞 Call Now
+        </a>
+        <a href="contact.html" class="btn btn-outline btn-lg" id="hero-quote-btn">
+          Request a Quote →
+        </a>
+      </div>
+      <div class="hero-phone-block">
+        <div class="hero-phone-icon">📞</div>
+        <div>
+          <div class="hero-phone-text">Call anytime — we're always happy to help</div>
+          <div class="hero-phone-number"><a href="tel:07810173271">07810 173271</a></div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-image-wrapper">
+      <img src="assets/images/hero.png" alt="Professional Mr Bee plumber working in a modern bathroom in Birmingham" loading="eager" width="600" height="750">
+      <div class="hero-image-badge">
+        <div class="hero-image-badge-icon">✓</div>
+        <div>
+          <div class="hero-image-badge-title">Tidy, Professional Workmanship</div>
+          <div class="hero-image-badge-text">We leave every job clean and complete</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TRUST BAR ===== -->
+<section class="trust-bar">
+  <div class="container">
+    <div class="trust-bar-inner">
+      <div class="trust-item">
+        <div class="trust-icon">🏠</div>
+        <span class="trust-label">Family-Run Business</span>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">📍</div>
+        <span class="trust-label">Local &amp; Reliable</span>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">🔧</div>
+        <span class="trust-label">Domestic &amp; Light Commercial</span>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">⭐</div>
+        <span class="trust-label">Professional Workmanship</span>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">💬</div>
+        <span class="trust-label">Clear Communication</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== WHY CHOOSE US ===== -->
+<section class="section bg-off-white" id="why-us">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-label">Why Choose Mr Bee</div>
+      <h2>A Plumbing Service You Can Actually Rely On</h2>
+      <p>We built our reputation on doing the job right — on time, cleanly, and at a fair price. Here's what sets us apart from the rest.</p>
+    </div>
+    <div class="why-us-grid">
+      <div class="why-card fade-in fade-in-delay-1">
+        <div class="why-icon">🏠</div>
+        <h3>Family-Run &amp; Customer-Focused</h3>
+        <p>As a small, family-run business, every customer matters. You'll get the personal attention and care that larger firms simply can't match.</p>
+      </div>
+      <div class="why-card fade-in fade-in-delay-2">
+        <div class="why-icon">📅</div>
+        <h3>Clear Communication &amp; Scheduling</h3>
+        <p>We keep you informed from first contact to job completion. No waiting around, no guessing — just straightforward, honest service.</p>
+      </div>
+      <div class="why-card fade-in fade-in-delay-3">
+        <div class="why-icon">✨</div>
+        <h3>Tidy, Respectful Workmanship</h3>
+        <p>We treat your home with respect. Our team protects surfaces, cleans up thoroughly, and leaves the work area exactly as we found it — or better.</p>
+      </div>
+      <div class="why-card fade-in fade-in-delay-4">
+        <div class="why-icon">💷</div>
+        <h3>Fair &amp; Honest Pricing</h3>
+        <p>No hidden charges or inflated quotes. You'll always know what you're paying for before we start, so there are never any surprises.</p>
+      </div>
+      <div class="why-card fade-in fade-in-delay-5">
+        <div class="why-icon">🔨</div>
+        <h3>Experienced in Repairs &amp; Installations</h3>
+        <p>Whether it's a complex boiler installation or a simple leak fix, we bring the same care, skill, and attention to every single job.</p>
+      </div>
+      <div class="why-card fade-in fade-in-delay-5">
+        <div class="why-icon">📍</div>
+        <h3>Trusted Across the West Midlands</h3>
+        <p>Based in Castle Bromwich, we serve homeowners and businesses across Birmingham and the wider West Midlands with pride and consistency.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== STATS ===== -->
+<section class="section bg-navy" style="padding: 0;">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-block fade-in">
+        <div class="stat-number" data-count="500" data-suffix="+">0+</div>
+        <div class="stat-label">Happy Customers</div>
+      </div>
+      <div class="stat-block fade-in fade-in-delay-1">
+        <div class="stat-number" data-count="10" data-suffix="+">0+</div>
+        <div class="stat-label">Years Experience</div>
+      </div>
+      <div class="stat-block fade-in fade-in-delay-2">
+        <div class="stat-number" data-count="100" data-suffix="%">0%</div>
+        <div class="stat-label">Satisfaction Focused</div>
+      </div>
+      <div class="stat-block fade-in fade-in-delay-3">
+        <div class="stat-number" data-count="15" data-suffix="+">0+</div>
+        <div class="stat-label">Areas Covered</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SERVICES ===== -->
+<section class="section bg-white" id="services">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-label">Our Services</div>
+      <h2>Complete Plumbing &amp; Heating Solutions</h2>
+      <p>From rapid repairs to full heating system installations, we cover everything your home or light commercial property needs.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card fade-in fade-in-delay-1">
+        <div class="service-card-icon">🔧</div>
+        <h3>General Plumbing Repairs</h3>
+        <p>Burst pipes, dripping taps, running toilets, leaking joints — we diagnose and fix plumbing problems efficiently, getting it right first time.</p>
+        <a href="contact.html" class="btn btn-outline-gold btn-sm">Get a Quote</a>
+      </div>
+      <div class="service-card fade-in fade-in-delay-2">
+        <div class="service-card-icon">🚿</div>
+        <h3>Plumbing Installations</h3>
+        <p>New sinks, showers, baths, or full bathroom plumbing installations. We plan, supply where needed, and install to the highest standard.</p>
+        <a href="contact.html" class="btn btn-outline-gold btn-sm">Speak to a Plumber</a>
+      </div>
+      <div class="service-card fade-in fade-in-delay-3">
+        <div class="service-card-icon">🌡️</div>
+        <h3>Central Heating Installation</h3>
+        <p>Full central heating system installation for new builds and older properties. Efficient, reliable, and installed with minimal disruption.</p>
+        <a href="contact.html" class="btn btn-outline-gold btn-sm">Get a Quote</a>
+      </div>
+      <div class="service-card fade-in fade-in-delay-1">
+        <div class="service-card-icon">🔥</div>
+        <h3>Boiler Swaps &amp; Heating Upgrades</h3>
+        <p>Old boiler letting you down? We replace ageing systems with modern, energy-efficient alternatives, improving comfort and reducing bills.</p>
+        <a href="contact.html" class="btn btn-outline-gold btn-sm">Get a Quote</a>
+      </div>
+      <div class="service-card fade-in fade-in-delay-2">
+        <div class="service-card-icon">♨️</div>
+        <h3>Radiator Installation</h3>
+        <p>New radiator fitting, relocations, or replacements. We help you get the most out of your heating system room by room.</p>
+        <a href="contact.html" class="btn btn-outline-gold btn-sm">Speak to a Plumber</a>
+      </div>
+      <div class="service-card fade-in fade-in-delay-3">
+        <div class="service-card-icon">💧</div>
+        <h3>Hot Water System Diagnostics</h3>
+        <p>No hot water, inconsistent pressure, or strange noises? We diagnose and repair hot water systems quickly and accurately.</p>
+        <a href="contact.html" class="btn btn-outline-gold btn-sm">Get a Quote</a>
+      </div>
+      <div class="service-card fade-in fade-in-delay-1">
+        <div class="service-card-icon">🚽</div>
+        <h3>Toilet Installation</h3>
+        <p>New toilet fitting, cistern repairs, or full suite replacements. Neat, leak-free, and completed with care for your home's finish.</p>
+        <a href="contact.html" class="btn btn-outline-gold btn-sm">Get a Quote</a>
+      </div>
+      <div class="service-card fade-in fade-in-delay-2">
+        <div class="service-card-icon">🌊</div>
+        <h3>Leak Repairs &amp; Waste Work</h3>
+        <p>Leaking pipes, sink wastes, or slow drains? We locate and resolve leaks efficiently, preventing costly water damage.</p>
+        <a href="contact.html" class="btn btn-outline-gold btn-sm">Speak to a Plumber</a>
+      </div>
+      <div class="service-card fade-in fade-in-delay-3">
+        <div class="service-card-icon">🏢</div>
+        <h3>Light Commercial Plumbing</h3>
+        <p>Reliable plumbing and heating solutions for small offices, retail units, and light commercial properties across Birmingham.</p>
+        <a href="contact.html" class="btn btn-outline-gold btn-sm">Get a Quote</a>
+      </div>
+    </div>
+    <div style="text-align:center; margin-top: 48px;" class="fade-in">
+      <a href="services.html" class="btn btn-navy btn-lg">View All Services →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TRUST / TESTIMONIALS ===== -->
+<section class="section bg-off-white" id="testimonials">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-label">Customer Reviews</div>
+      <h2>What Our Customers Say</h2>
+      <p>We build long-term trust through honest service and quality results. Here's what local homeowners in Birmingham and the West Midlands have to say.</p>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card fade-in fade-in-delay-1">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">"Absolutely brilliant service. The plumber arrived on time, explained everything clearly before starting, and left the bathroom spotless. Would highly recommend Mr Bee Plumbing to anyone in Birmingham."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">SR</div>
+          <div>
+            <div class="author-name">Sarah R.</div>
+            <div class="author-location">Castle Bromwich, Birmingham</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card fade-in fade-in-delay-2">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">"Had a stubborn boiler issue that two other plumbers couldn't sort. Mr Bee diagnosed it on the first visit and fixed it properly. Honest pricing, no drama. Exactly what you want from a local plumber."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">JT</div>
+          <div>
+            <div class="author-name">James T.</div>
+            <div class="author-location">Sutton Coldfield</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card fade-in fade-in-delay-3">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">"Really impressed with the whole experience. Friendly, professional, and the kitchen installation was done to a really high standard. Communication was excellent throughout. Great local business."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">LM</div>
+          <div>
+            <div class="author-name">Linda M.</div>
+            <div class="author-location">Solihull</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:40px;" class="fade-in">
+      <a href="reviews.html" class="btn btn-outline-gold">Read More Reviews →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ABOUT PREVIEW ===== -->
+<section class="section bg-white" id="about">
+  <div class="container">
+    <div class="about-content">
+      <div class="about-image-wrapper slide-in-left">
+        <img src="assets/images/about.png" alt="Mr Bee Plumbing professional engineer in Birmingham" loading="lazy" width="600" height="750">
+        <div class="about-image-badge-wrap">
+          <div class="number">10+</div>
+          <div class="label">Years Serving<br>Birmingham</div>
+        </div>
+      </div>
+      <div class="about-text slide-in-right">
+        <div class="section-label">About Us</div>
+        <h2>A Birmingham Plumbing Business Built on Trust</h2>
+        <p>Mr Bee Plumbing is a family-run plumbing and heating business based in Castle Bromwich, Birmingham. We've been helping homeowners and local businesses across the West Midlands keep their plumbing and heating running smoothly for over a decade.</p>
+        <p>What makes us different is simple — we treat every customer the way we'd want to be treated ourselves. That means turning up on time, explaining the work clearly, pricing it fairly, and leaving your property tidy when we're done.</p>
+        <p>Whether you need a quick repair or a full heating installation, you'll get the same level of professionalism and care. No cutting corners, no overselling — just honest, dependable local service.</p>
+        <div class="about-features">
+          <div class="about-feature">
+            <div class="about-feature-icon">✓</div>
+            <span class="about-feature-text">On-time and reliable</span>
+          </div>
+          <div class="about-feature">
+            <div class="about-feature-icon">✓</div>
+            <span class="about-feature-text">Tidy, respectful work</span>
+          </div>
+          <div class="about-feature">
+            <div class="about-feature-icon">✓</div>
+            <span class="about-feature-text">Fair, transparent pricing</span>
+          </div>
+          <div class="about-feature">
+            <div class="about-feature-icon">✓</div>
+            <span class="about-feature-text">Local &amp; personally accountable</span>
+          </div>
+          <div class="about-feature">
+            <div class="about-feature-icon">✓</div>
+            <span class="about-feature-text">Domestic &amp; light commercial</span>
+          </div>
+          <div class="about-feature">
+            <div class="about-feature-icon">✓</div>
+            <span class="about-feature-text">Problems fixed right first time</span>
+          </div>
+        </div>
+        <a href="about.html" class="btn btn-navy">Learn More About Us →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SERVICE AREAS ===== -->
+<section class="section bg-gray" id="service-areas">
+  <div class="container">
+    <div class="areas-grid">
+      <div class="slide-in-left">
+        <div class="section-label">Service Areas</div>
+        <h2>Plumbing &amp; Heating Across Birmingham &amp; the West Midlands</h2>
+        <p style="margin-top:16px;">Based in Castle Bromwich, we provide plumbing services across Birmingham and the surrounding West Midlands area. If you're looking for a <strong>plumber in Castle Bromwich</strong>, <strong>Birmingham plumbing services</strong>, or a trusted <strong>West Midlands plumbing and heating</strong> specialist, we're here to help.</p>
+        <div class="area-tags">
+          <span class="area-tag primary">Castle Bromwich</span>
+          <span class="area-tag primary">Birmingham</span>
+          <span class="area-tag">Solihull</span>
+          <span class="area-tag">Sutton Coldfield</span>
+          <span class="area-tag">Erdington</span>
+          <span class="area-tag">Coleshill</span>
+          <span class="area-tag">Water Orton</span>
+          <span class="area-tag">Chelmsley Wood</span>
+          <span class="area-tag">Marston Green</span>
+          <span class="area-tag">Great Barr</span>
+          <span class="area-tag">Yardley</span>
+          <span class="area-tag">Sheldon</span>
+          <span class="area-tag">West Midlands</span>
+        </div>
+        <div style="margin-top:32px;">
+          <a href="service-areas.html" class="btn btn-navy">View Full Service Areas →</a>
+        </div>
+      </div>
+      <div class="map-placeholder slide-in-right">
+        <div style="font-size:3rem; opacity:0.4;">📍</div>
+        <div style="font-size:1rem;font-weight:700;color:var(--navy);opacity:0.6;">Castle Bromwich, Birmingham B36</div>
+        <div style="font-size:0.8rem;color:var(--gray-400);opacity:0.7;text-align:center;padding:0 24px;">Covering Birmingham &amp; West Midlands</div>
+        <a href="https://maps.google.com/?q=429+Chester+Road,+Castle+Bromwich,+Birmingham+B36+0JJ" target="_blank" rel="noopener" class="btn btn-outline-gold btn-sm" style="margin-top:8px;">📍 Get Directions</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA BAND ===== -->
+<section class="cta-band" id="cta">
+  <div class="container">
+    <div class="cta-band-content fade-in">
+      <h2>Need a Reliable Local Plumber?</h2>
+      <p>Call Mr Bee Plumbing today for fast, professional service and a competitive quote. We're here to help with all your plumbing and heating needs across Birmingham and the West Midlands.</p>
+      <div class="cta-band-phone">
+        <a href="tel:07810173271">07810 173271</a>
+      </div>
+      <div class="cta-band-actions">
+        <a href="tel:07810173271" class="btn btn-primary btn-lg" id="cta-call-btn">📞 Call Now</a>
+        <a href="contact.html" class="btn btn-outline btn-lg" id="cta-quote-btn">Request a Quote</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section class="section bg-off-white" id="contact">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-label">Get In Touch</div>
+      <h2>Request a Quote or Speak to a Plumber</h2>
+      <p>Fill in the form below and we'll get back to you promptly. Or simply give us a call — we're always happy to help.</p>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-info-card slide-in-left">
+        <h3>Contact Mr Bee Plumbing</h3>
+        <div class="contact-detail">
+          <div class="contact-detail-icon">📞</div>
+          <div>
+            <div class="contact-detail-label">Phone</div>
+            <div class="contact-detail-value"><a href="tel:07810173271">07810 173271</a></div>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-detail-icon">📍</div>
+          <div>
+            <div class="contact-detail-label">Address</div>
+            <div class="contact-detail-value">429 Chester Road, Castle Bromwich<br>Birmingham, B36 0JJ</div>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-detail-icon">🌐</div>
+          <div>
+            <div class="contact-detail-label">Website</div>
+            <div class="contact-detail-value"><a href="https://mrbeeplumbing.co.uk" target="_blank" rel="noopener">mrbeeplumbing.co.uk</a></div>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-detail-icon">⏰</div>
+          <div>
+            <div class="contact-detail-label">Hours</div>
+            <div class="contact-detail-value">Monday – Friday: 8:00am – 6:00pm</div>
+          </div>
+        </div>
+        <div style="margin-top:32px;">
+          <a href="tel:07810173271" class="btn btn-primary" style="width:100%;justify-content:center;">📞 Call 07810 173271</a>
+        </div>
+      </div>
+      <div class="contact-form-wrapper slide-in-right">
+        <h3>Send Us a Message</h3>
+        <p>We aim to respond to all enquiries within a few hours during business hours.</p>
+        <form id="contact-form" novalidate>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label" for="name">Full Name *</label>
+              <input class="form-input" type="text" id="name" name="name" placeholder="Your name" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="phone">Phone Number *</label>
+              <input class="form-input" type="tel" id="phone" name="phone" placeholder="07xxx xxxxxx" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="email">Email Address</label>
+              <input class="form-input" type="email" id="email" name="email" placeholder="your@email.com">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="postcode">Postcode</label>
+              <input class="form-input" type="text" id="postcode" name="postcode" placeholder="B36 0JJ">
+            </div>
+            <div class="form-group span-2">
+              <label class="form-label" for="service">Service Needed</label>
+              <select class="form-select" id="service" name="service">
+                <option value="">Select a service...</option>
+                <option>General Plumbing Repair</option>
+                <option>Plumbing Installation</option>
+                <option>Central Heating Installation</option>
+                <option>Boiler Swap / Heating Upgrade</option>
+                <option>Radiator Installation</option>
+                <option>Hot Water System</option>
+                <option>Toilet Installation</option>
+                <option>Leak Repair</option>
+                <option>Light Commercial Plumbing</option>
+                <option>Other / Not Sure</option>
+              </select>
+            </div>
+            <div class="form-group span-2">
+              <label class="form-label" for="message">Message</label>
+              <textarea class="form-textarea" id="message" name="message" placeholder="Tell us about the job — as much detail as you can..."></textarea>
+            </div>
+            <div class="form-submit">
+              <button type="submit" class="btn btn-primary btn-lg" id="form-submit-btn">Send Enquiry →</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="site-logo" style="margin-bottom:0; text-decoration: none; color: inherit;">
+          <div class="logo-icon" style="width: 48px; height: 48px; display: flex; align-items: center; justify-content: center;">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none" style="width: 28px; height: 28px;"><polygon points="14,2 26,8.5 26,21.5 14,28 2,21.5 2,8.5" fill="none" stroke="#c8922a" stroke-width="1.5"/><polygon points="14,6 22,10.5 22,19.5 14,24 6,19.5 6,10.5" fill="rgba(200,146,42,0.15)" stroke="#c8922a" stroke-width="1"/><text x="14" y="18" text-anchor="middle" fill="#c8922a" font-size="10" font-weight="bold" font-family="Arial">B</text></svg>
+          </div>
+          <div class="logo-text">
+            <span class="logo-name">Mr Bee Plumbing</span>
+            <span class="logo-tagline">Birmingham & West Midlands</span>
+          </div>
+        </a>
+        <p class="footer-tagline">Family-run plumbing and heating services across Birmingham and the West Midlands. Professional, reliable, and fairly priced.</p>
+        <a href="tel:07810173271" class="footer-phone">
+          <span class="footer-phone-icon">📞</span>
+          <span class="footer-phone-num">07810 173271</span>
+        </a>
+      </div>
+      <div class="footer-col">
+        <h4>Our Services</h4>
+        <ul class="footer-links">
+          <li><a href="services.html#repairs">Plumbing Repairs</a></li>
+          <li><a href="services.html#installations">Installations</a></li>
+          <li><a href="services.html#heating">Central Heating</a></li>
+          <li><a href="services.html#boilers">Boiler Swaps</a></li>
+          <li><a href="services.html#radiators">Radiators</a></li>
+          <li><a href="services.html#hotwater">Hot Water</a></li>
+          <li><a href="services.html#commercial">Commercial</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="service-areas.html">Service Areas</a></li>
+          <li><a href="reviews.html">Reviews</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Service Areas</h4>
+        <ul class="footer-links">
+          <li><a href="service-areas.html">Castle Bromwich</a></li>
+          <li><a href="service-areas.html">Birmingham</a></li>
+          <li><a href="service-areas.html">Solihull</a></li>
+          <li><a href="service-areas.html">Sutton Coldfield</a></li>
+          <li><a href="service-areas.html">Erdington</a></li>
+          <li><a href="service-areas.html">West Midlands</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2024 Mr Bee Plumbing. All rights reserved. | 429 Chester Road, Castle Bromwich, Birmingham B36 0JJ</span>
+      <span>Plumber in Birmingham &amp; West Midlands | <a href="https://mrbeeplumbing.co.uk" style="color:rgba(255,255,255,0.45);transition:color 0.2s;" onmouseover="this.style.color='rgba(255,255,255,0.8)'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">mrbeeplumbing.co.uk</a></span>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== MOBILE STICKY CTA ===== -->
+<div class="mobile-sticky-cta" id="mobile-cta">
+  <a href="tel:07810173271" class="btn btn-primary" id="mobile-sticky-call">📞 Call 07810 173271</a>
+</div>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>
