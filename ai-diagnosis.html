@@ -877,32 +877,41 @@ analyzeBtn.addEventListener('click', async () => {
   setLoadingStep(1);
   await new Promise(r => setTimeout(r, 400));
   setLoadingStep(2);
-  await new Promise(r => setTimeout(r, 500));
-  setLoadingStep(3);
 
   try {
-    const response = await fetch(`${GEMINI_URL}?key=${apiKey}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{
-          parts: [
-            { text: SYSTEM_PROMPT },
-            { inline_data: { mime_type: currentMimeType, data: currentFileBase64 } }
-          ]
-        }],
-        generationConfig: { temperature: 0.2, maxOutputTokens: 1024 }
-      })
-    });
+    const tryAnalysis = async (modelId) => {
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelId}:generateContent?key=${apiKey}`;
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{
+            parts: [
+              { text: SYSTEM_PROMPT },
+              { inline_data: { mime_type: currentMimeType, data: currentFileBase64 } }
+            ]
+          }],
+          generationConfig: { temperature: 0.2, maxOutputTokens: 1024 }
+        })
+      });
+      return response;
+    };
+
+    setLoadingStep(3);
+    
+    // Attempt 1: Flash Latest
+    let response = await tryAnalysis('gemini-1.5-flash-latest');
+    
+    // Fallback if Attempt 1 fails (common in some regions)
+    if (!response.ok) {
+      console.warn("Flash failed, trying Pro fallback...");
+      response = await tryAnalysis('gemini-1.5-pro-latest');
+    }
 
     if (!response.ok) {
       const errData = await response.json().catch(() => ({}));
       const msg = errData?.error?.message || `API error ${response.status}`;
-      if (response.status === 400 && msg.includes('API_KEY')) {
-        showError('Invalid API key. Please check your key in the setup section above.');
-      } else {
-        showError(`AI error: ${msg}`);
-      }
+      showError(`AI error: ${msg}`);
       analyzeBtn.disabled = false;
       return;
     }
@@ -913,14 +922,14 @@ analyzeBtn.addEventListener('click', async () => {
     const result = await response.json();
     const text = result?.candidates?.[0]?.content?.parts?.[0]?.text || '';
 
-    // Strip markdown code fences if present
+    // Strip markdown code fences
     const cleaned = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
 
     let data;
     try {
       data = JSON.parse(cleaned);
     } catch {
-      showError('The AI returned an unexpected response. Please try again with a clearer photo.');
+      showError('The AI returned an invalid response. This can happen if the photo is blurry. Please try again with a clearer picture.');
       analyzeBtn.disabled = false;
       return;
     }
