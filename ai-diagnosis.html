@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Plumbing Diagnosis | Upload a Photo | Mr Bee Plumbing Birmingham</title>
+  <meta name="description" content="Upload a photo of your plumbing problem and get an instant AI-powered diagnosis. Free tool by Mr Bee Plumbing, Birmingham.">
+  <link rel="canonical" href="https://mrbeeplumbing.co.uk/ai-diagnosis">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <style>
+    /* ── AI Diagnosis Page Styles ── */
+    .ai-hero {
+      background: linear-gradient(135deg, var(--navy) 0%, #0a1628 50%, #112044 100%);
+      padding: 140px 0 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .ai-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='104' viewBox='0 0 60 104'%3E%3Cpolygon points='30,2 58,17 58,47 30,62 2,47 2,17' fill='none' stroke='rgba(200,146,42,0.06)' stroke-width='1'/%3E%3Cpolygon points='30,52 58,67 58,97 30,112 2,97 2,67' fill='none' stroke='rgba(200,146,42,0.06)' stroke-width='1'/%3E%3C/svg%3E");
+      opacity: 0.6;
+    }
+    .ai-hero-content { position: relative; z-index: 1; }
+    .ai-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, rgba(200,146,42,0.2), rgba(232,168,60,0.1));
+      border: 1px solid rgba(200,146,42,0.4);
+      color: var(--gold-light);
+      padding: 8px 20px;
+      border-radius: 100px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .ai-hero h1 { color: var(--white); margin-bottom: 16px; }
+    .ai-hero h1 span { color: var(--gold-light); }
+    .ai-hero p { color: rgba(255,255,255,0.65); font-size: 1.05rem; max-width: 580px; margin: 0 auto 32px; }
+    .ai-hero-trust {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .ai-trust-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.5);
+    }
+    .ai-trust-item span.dot {
+      width: 6px; height: 6px;
+      background: var(--gold);
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    /* ── API Key Setup Banner ── */
+    .api-setup-banner {
+      background: linear-gradient(135deg, #1a2d4a, #152038);
+      border: 1px solid rgba(200,146,42,0.25);
+      border-radius: var(--radius-lg);
+      padding: 24px 28px;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+    .api-setup-icon {
+      width: 44px; height: 44px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .api-setup-text h4 { color: var(--white); font-size: 0.95rem; margin-bottom: 6px; }
+    .api-setup-text p { color: rgba(255,255,255,0.55); font-size: 0.82rem; margin: 0; line-height: 1.6; }
+    .api-setup-text a { color: var(--gold-light); text-decoration: underline; }
+    .api-key-row { display: flex; gap: 10px; margin-top: 12px; }
+    .api-key-input {
+      flex: 1;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 10px;
+      padding: 10px 14px;
+      color: var(--white);
+      font-size: 0.85rem;
+      font-family: monospace;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .api-key-input:focus { border-color: var(--gold); }
+    .api-key-input::placeholder { color: rgba(255,255,255,0.25); }
+    .api-key-save {
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      color: var(--navy);
+      border: none;
+      border-radius: 10px;
+      padding: 10px 18px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      white-space: nowrap;
+    }
+    .api-key-save:hover { opacity: 0.85; }
+    .api-key-status {
+      margin-top: 8px;
+      font-size: 0.78rem;
+    }
+    .api-key-status.saved { color: #2ecc71; }
+    .api-key-status.missing { color: rgba(255,255,255,0.35); }
+
+    /* ── Upload Zone ── */
+    .diagnosis-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: flex-start;
+    }
+    .upload-panel {
+      background: #0f2035;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius-xl);
+      padding: 36px;
+    }
+    .upload-panel h3 { color: var(--white); font-size: 1.05rem; margin-bottom: 20px; }
+    .upload-zone {
+      border: 2px dashed rgba(200,146,42,0.35);
+      border-radius: var(--radius-lg);
+      padding: 48px 24px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      position: relative;
+      background: rgba(200,146,42,0.03);
+    }
+    .upload-zone:hover, .upload-zone.drag-over {
+      border-color: var(--gold);
+      background: rgba(200,146,42,0.07);
+    }
+    .upload-zone input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+    .upload-icon {
+      width: 72px; height: 72px;
+      background: linear-gradient(135deg, rgba(200,146,42,0.15), rgba(200,146,42,0.05));
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem;
+      margin: 0 auto 16px;
+    }
+    .upload-zone h4 { color: var(--white); font-size: 0.95rem; margin-bottom: 8px; }
+    .upload-zone p { color: rgba(255,255,255,0.4); font-size: 0.8rem; margin: 0; }
+    .upload-zone .or { margin: 16px 0; color: rgba(255,255,255,0.25); font-size: 0.78rem; }
+    .upload-zone .browse-btn {
+      display: inline-block;
+      padding: 8px 20px;
+      background: rgba(200,146,42,0.15);
+      border: 1px solid rgba(200,146,42,0.3);
+      border-radius: 8px;
+      color: var(--gold-light);
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    /* Image Preview */
+    .image-preview-wrap {
+      margin-top: 20px;
+      display: none;
+    }
+    .image-preview-wrap.visible { display: block; }
+    .image-preview-wrap img {
+      width: 100%;
+      border-radius: var(--radius-md);
+      max-height: 300px;
+      object-fit: cover;
+    }
+    .preview-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    #analyze-btn {
+      flex: 1;
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      color: var(--navy);
+      border: none;
+      border-radius: var(--radius-md);
+      padding: 14px 20px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: inherit;
+    }
+    #analyze-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(200,146,42,0.35); }
+    #analyze-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    #clear-btn {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      color: rgba(255,255,255,0.5);
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+    }
+    #clear-btn:hover { background: rgba(255,255,255,0.1); color: var(--white); }
+
+    /* ── Results Panel ── */
+    .results-panel {
+      background: #0f2035;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius-xl);
+      padding: 36px;
+      min-height: 400px;
+      display: flex;
+      flex-direction: column;
+    }
+    .results-panel h3 { color: var(--white); font-size: 1.05rem; margin-bottom: 20px; }
+
+    /* Empty state */
+    .results-empty {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+    }
+    .results-empty-icon { font-size: 3rem; opacity: 0.25; }
+    .results-empty p { color: rgba(255,255,255,0.3); font-size: 0.85rem; margin: 0; }
+
+    /* Loading state */
+    .results-loading {
+      flex: 1;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      text-align: center;
+    }
+    .results-loading.visible { display: flex; }
+    .spinner {
+      width: 56px; height: 56px;
+      border: 3px solid rgba(200,146,42,0.15);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-steps { display: flex; flex-direction: column; gap: 8px; }
+    .loading-step {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 0.82rem; color: rgba(255,255,255,0.35);
+      transition: color 0.4s;
+    }
+    .loading-step.active { color: rgba(255,255,255,0.75); }
+    .loading-step.done { color: #2ecc71; }
+    .loading-step-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      flex-shrink: 0;
+      transition: background 0.4s;
+    }
+    .loading-step.active .loading-step-dot { background: var(--gold); }
+    .loading-step.done .loading-step-dot { background: #2ecc71; }
+
+    /* Result cards */
+    .results-content { display: none; flex-direction: column; gap: 16px; }
+    .results-content.visible { display: flex; }
+
+    .severity-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: 100px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .severity-badge.low { background: rgba(46,204,113,0.15); color: #2ecc71; border: 1px solid rgba(46,204,113,0.3); }
+    .severity-badge.medium { background: rgba(243,156,18,0.15); color: #f39c12; border: 1px solid rgba(243,156,18,0.3); }
+    .severity-badge.high { background: rgba(231,76,60,0.15); color: #e74c3c; border: 1px solid rgba(231,76,60,0.3); }
+    .severity-badge.emergency { background: rgba(192,57,43,0.25); color: #ff6b6b; border: 1px solid rgba(192,57,43,0.5); animation: urgentPulse 1.5s ease-in-out infinite; }
+    @keyframes urgentPulse { 0%,100%{opacity:1;} 50%{opacity:0.6;} }
+
+    .result-problem-title {
+      color: var(--white);
+      font-size: 1.35rem;
+      font-weight: 800;
+      line-height: 1.3;
+    }
+
+    .result-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: var(--radius-md);
+      padding: 20px;
+    }
+    .result-card-title {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+    .result-card p {
+      color: rgba(255,255,255,0.75);
+      font-size: 0.875rem;
+      line-height: 1.7;
+      margin: 0;
+    }
+    .result-card ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .result-card ul li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      color: rgba(255,255,255,0.75);
+      font-size: 0.875rem;
+      line-height: 1.6;
+    }
+    .result-card ul li::before {
+      content: '→';
+      color: var(--gold);
+      flex-shrink: 0;
+      font-weight: 700;
+    }
+
+    .pro-needed-banner {
+      background: linear-gradient(135deg, rgba(200,146,42,0.12), rgba(232,168,60,0.06));
+      border: 1px solid rgba(200,146,42,0.3);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .pro-needed-banner .icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 2px; }
+    .pro-needed-banner h5 { color: var(--gold-light); font-size: 0.9rem; margin-bottom: 4px; }
+    .pro-needed-banner p { color: rgba(255,255,255,0.6); font-size: 0.8rem; margin: 0; line-height: 1.6; }
+    .pro-needed-banner .call-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 10px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      color: var(--navy);
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      transition: opacity 0.2s;
+    }
+    .pro-needed-banner .call-link:hover { opacity: 0.85; }
+
+    .result-disclaimer {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.25);
+      line-height: 1.6;
+      margin-top: 4px;
+    }
+
+    /* Error state */
+    .results-error {
+      display: none;
+      background: rgba(231,76,60,0.1);
+      border: 1px solid rgba(231,76,60,0.25);
+      border-radius: var(--radius-md);
+      padding: 20px;
+    }
+    .results-error.visible { display: block; }
+    .results-error h4 { color: #e74c3c; font-size: 0.9rem; margin-bottom: 8px; }
+    .results-error p { color: rgba(255,255,255,0.55); font-size: 0.82rem; margin: 0; }
+
+    /* ── How It Works ── */
+    .how-it-works { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .how-step {
+      text-align: center;
+      padding: 28px 20px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: var(--radius-lg);
+    }
+    .how-step-num {
+      width: 40px; height: 40px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 0.9rem; color: var(--navy);
+      margin: 0 auto 14px;
+    }
+    .how-step h4 { color: var(--white); font-size: 0.9rem; margin-bottom: 8px; }
+    .how-step p { color: rgba(255,255,255,0.45); font-size: 0.8rem; line-height: 1.6; margin: 0; }
+
+    /* Dark section override */
+    .section-dark {
+      background: #08172b;
+    }
+    .section-dark .section-label { background: rgba(200,146,42,0.12); }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .diagnosis-wrapper { grid-template-columns: 1fr; }
+      .how-it-works { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .how-it-works { grid-template-columns: 1fr; }
+      .api-key-row { flex-direction: column; }
+      .ai-hero { padding: 120px 0 60px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="site-header" id="site-header">
+  <div class="header-top"><div class="container"><span>📍 Castle Bromwich, Birmingham B36 0JJ</span><span>Call: <a href="tel:07810173271">07810 173271</a></span></div></div>
+  <div class="header-main">
+    <div class="header-inner">
+      <a href="index.html" class="site-logo"><div class="logo-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none" style="width:28px;height:28px;display:block;"><polygon points="14,2 26,8.5 26,21.5 14,28 2,21.5 2,8.5" fill="none" stroke="#c8922a" stroke-width="1.5"/><polygon points="14,6 22,10.5 22,19.5 14,24 6,19.5 6,10.5" fill="rgba(200,146,42,0.15)" stroke="#c8922a" stroke-width="1"/><text x="14" y="18" text-anchor="middle" fill="#c8922a" font-size="10" font-weight="bold" font-family="Arial">B</text></svg></div><div class="logo-text"><span class="logo-name">Mr Bee Plumbing</span><span class="logo-tagline">Birmingham & West Midlands</span></div></a>
+      <nav class="site-nav">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="services.html">Services</a>
+        <a href="service-areas.html">Areas</a>
+        <a href="reviews.html">Reviews</a>
+        <a href="contact.html">Contact</a>
+        <a href="ai-diagnosis.html" class="active" style="color:var(--gold);background:rgba(200,146,42,0.08);">🤖 AI Diagnosis</a>
+      </nav>
+      <div class="nav-cta-group"><a href="tel:07810173271" class="nav-phone"><div class="nav-phone-icon">📞</div><span>07810 173271</span></a><a href="contact.html" class="btn btn-primary btn-sm">Get a Quote</a></div>
+      <button class="hamburger" id="hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobile-menu">
+  <button class="mobile-menu-close" id="mobile-menu-close">✕</button>
+  <a href="index.html">Home</a><a href="about.html">About</a><a href="services.html">Services</a><a href="service-areas.html">Areas</a><a href="reviews.html">Reviews</a><a href="contact.html">Contact</a>
+  <a href="ai-diagnosis.html" style="color:var(--gold-light) !important;">🤖 AI Diagnosis</a>
+  <a href="tel:07810173271" class="mobile-menu-phone">📞 07810 173271</a>
+</div>
+
+<!-- ===== AI HERO ===== -->
+<section class="ai-hero">
+  <div class="container ai-hero-content">
+    <div class="ai-badge">✨ Powered by Google Gemini AI &nbsp;·&nbsp; Free Tool</div>
+    <h1>AI Plumbing <span>Photo Diagnosis</span></h1>
+    <p>Upload a photo of any plumbing or heating problem and get an instant professional assessment — completely free, no sign-up needed.</p>
+    <div class="ai-hero-trust">
+      <div class="ai-trust-item"><span class="dot"></span> Instant analysis</div>
+      <div class="ai-trust-item"><span class="dot"></span> Severity rating</div>
+      <div class="ai-trust-item"><span class="dot"></span> Step-by-step guidance</div>
+      <div class="ai-trust-item"><span class="dot"></span> 100% free</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MAIN TOOL ===== -->
+<section class="section section-dark">
+  <div class="container">
+
+    <!-- API Key Setup -->
+    <div class="api-setup-banner" id="api-setup-banner">
+      <div class="api-setup-icon">🔑</div>
+      <div class="api-setup-text" style="flex:1;">
+        <h4>One-Time Setup — Free Google Gemini API Key Required</h4>
+        <p>This tool uses Google's free Gemini AI. Get your free API key at <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">aistudio.google.com</a> (takes 30 seconds, no credit card needed). Enter it below — it's saved only in your browser.</p>
+        <div class="api-key-row">
+          <input type="password" class="api-key-input" id="api-key-input" placeholder="Paste your Gemini API key here...">
+          <button class="api-key-save" id="api-key-save">Save Key</button>
+        </div>
+        <div class="api-key-status missing" id="api-key-status">⚠ No API key saved yet</div>
+      </div>
+    </div>
+
+    <!-- Tool Layout -->
+    <div class="diagnosis-wrapper">
+
+      <!-- LEFT: Upload -->
+      <div class="upload-panel">
+        <h3>📷 Upload Your Photo</h3>
+
+        <div class="upload-zone" id="upload-zone">
+          <input type="file" id="file-input" accept="image/*" capture="environment">
+          <div class="upload-icon">📷</div>
+          <h4>Drop your photo here</h4>
+          <p>Leaks, pipes, boilers, radiators, toilets…</p>
+          <div class="or">— or —</div>
+          <span class="browse-btn">Browse / Take Photo</span>
+        </div>
+
+        <div class="image-preview-wrap" id="preview-wrap">
+          <img id="preview-img" src="" alt="Uploaded photo preview">
+          <div class="preview-actions">
+            <button id="analyze-btn">🔍 Analyse This Photo</button>
+            <button id="clear-btn">✕ Clear</button>
+          </div>
+        </div>
+
+        <!-- Tips -->
+        <div style="margin-top:24px;padding:18px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:12px;">
+          <p style="font-size:0.75rem;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">📸 For best results</p>
+          <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px;">
+            <li style="font-size:0.78rem;color:rgba(255,255,255,0.45);display:flex;gap:8px;align-items:flex-start;"><span style="color:var(--gold);">✓</span>Make sure the photo is well-lit and in focus</li>
+            <li style="font-size:0.78rem;color:rgba(255,255,255,0.45);display:flex;gap:8px;align-items:flex-start;"><span style="color:var(--gold);">✓</span>Get close enough to show the problem clearly</li>
+            <li style="font-size:0.78rem;color:rgba(255,255,255,0.45);display:flex;gap:8px;align-items:flex-start;"><span style="color:var(--gold);">✓</span>Include surrounding pipes or fittings for context</li>
+            <li style="font-size:0.78rem;color:rgba(255,255,255,0.45);display:flex;gap:8px;align-items:flex-start;"><span style="color:var(--gold);">✓</span>One photo per problem works best</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- RIGHT: Results -->
+      <div class="results-panel" id="results-panel">
+        <h3>🩺 Diagnosis Result</h3>
+
+        <!-- Empty state -->
+        <div class="results-empty" id="results-empty">
+          <div class="results-empty-icon">🔍</div>
+          <p>Upload a photo on the left<br>to see your instant diagnosis here.</p>
+        </div>
+
+        <!-- Loading state -->
+        <div class="results-loading" id="results-loading">
+          <div class="spinner"></div>
+          <div class="loading-steps">
+            <div class="loading-step" id="step-1"><div class="loading-step-dot"></div> Uploading image…</div>
+            <div class="loading-step" id="step-2"><div class="loading-step-dot"></div> Sending to AI…</div>
+            <div class="loading-step" id="step-3"><div class="loading-step-dot"></div> Analysing the issue…</div>
+            <div class="loading-step" id="step-4"><div class="loading-step-dot"></div> Preparing your diagnosis…</div>
+          </div>
+        </div>
+
+        <!-- Error state -->
+        <div class="results-error" id="results-error">
+          <h4>⚠ Something went wrong</h4>
+          <p id="error-msg">Please check your API key and try again.</p>
+        </div>
+
+        <!-- Results -->
+        <div class="results-content" id="results-content">
+          <div style="display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap;">
+            <div class="severity-badge" id="severity-badge">Medium</div>
+          </div>
+          <div class="result-problem-title" id="problem-title">—</div>
+
+          <div class="result-card">
+            <div class="result-card-title">👁 What the AI can see</div>
+            <p id="result-what-i-see">—</p>
+          </div>
+
+          <div class="result-card">
+            <div class="result-card-title">🔎 Likely causes</div>
+            <ul id="result-causes"></ul>
+          </div>
+
+          <div class="result-card">
+            <div class="result-card-title">⚡ Immediate steps</div>
+            <ul id="result-steps"></ul>
+          </div>
+
+          <div class="pro-needed-banner" id="pro-banner">
+            <div class="icon">🛠️</div>
+            <div>
+              <h5>Professional help needed</h5>
+              <p id="pro-urgency">—</p>
+              <a href="tel:07810173271" class="call-link">📞 Call Mr Bee Plumbing — 07810 173271</a>
+            </div>
+          </div>
+
+          <p class="result-disclaimer">⚠ This AI diagnosis is a guide only and is not a substitute for a professional inspection. Mr Bee Plumbing accepts no liability for actions taken solely based on this analysis. Always consult a qualified plumber for safety-critical issues.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== HOW IT WORKS ===== -->
+<section class="section" style="background:#0a1628;">
+  <div class="container">
+    <div class="section-header fade-in" style="color:var(--white);">
+      <div class="section-label">Simple Process</div>
+      <h2 style="color:var(--white);">How It Works</h2>
+      <p style="color:rgba(255,255,255,0.5);">Four steps to an instant professional-grade plumbing diagnosis.</p>
+    </div>
+    <div class="how-it-works">
+      <div class="how-step fade-in">
+        <div class="how-step-num">1</div>
+        <h4>Take a Photo</h4>
+        <p>Photograph the plumbing or heating problem clearly — the closer the better.</p>
+      </div>
+      <div class="how-step fade-in">
+        <div class="how-step-num">2</div>
+        <h4>Upload It</h4>
+        <p>Drag and drop or tap to browse. Works on both desktop and mobile.</p>
+      </div>
+      <div class="how-step fade-in">
+        <div class="how-step-num">3</div>
+        <h4>AI Analyses It</h4>
+        <p>Google's Gemini AI — trained on billions of images — identifies the problem instantly.</p>
+      </div>
+      <div class="how-step fade-in">
+        <div class="how-step-num">4</div>
+        <h4>Get Your Diagnosis</h4>
+        <p>See the severity, likely causes, and exactly what to do — including whether to call us.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA BAND ===== -->
+<section class="cta-band">
+  <div class="container">
+    <div class="cta-band-content fade-in">
+      <h2>Need a Real Plumber?</h2>
+      <p>Our AI tool is a great first step — but nothing beats a professional on-site. Call Mr Bee Plumbing for same-day help across Birmingham and the West Midlands.</p>
+      <div class="cta-band-phone"><a href="tel:07810173271">07810 173271</a></div>
+      <div class="cta-band-actions">
+        <a href="tel:07810173271" class="btn btn-primary btn-lg">📞 Call Now</a>
+        <a href="contact.html" class="btn btn-outline btn-lg">Request a Quote</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand"><a href="index.html" class="site-logo"><div class="logo-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><polygon points="14,2 26,8.5 26,21.5 14,28 2,21.5 2,8.5" fill="none" stroke="#c8922a" stroke-width="1.5"/><polygon points="14,6 22,10.5 22,19.5 14,24 6,19.5 6,10.5" fill="rgba(200,146,42,0.15)" stroke="#c8922a" stroke-width="1"/><text x="14" y="18" text-anchor="middle" fill="#c8922a" font-size="10" font-weight="bold" font-family="Arial">B</text></svg></div><div class="logo-text"><span class="logo-name">Mr Bee Plumbing</span><span class="logo-tagline">Birmingham & West Midlands</span></div></a><p class="footer-tagline">Family-run plumbing and heating. Professional, reliable, fairly priced.</p><a href="tel:07810173271" class="footer-phone"><span class="footer-phone-icon">📞</span><span class="footer-phone-num">07810 173271</span></a></div>
+      <div class="footer-col"><h4>Services</h4><ul class="footer-links"><li><a href="services.html">All Services</a></li><li><a href="ai-diagnosis.html">🤖 AI Diagnosis</a></li><li><a href="services.html#repairs">Repairs</a></li><li><a href="services.html#boilers">Boilers</a></li></ul></div>
+      <div class="footer-col"><h4>Company</h4><ul class="footer-links"><li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li><li><a href="reviews.html">Reviews</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+      <div class="footer-col"><h4>Areas</h4><ul class="footer-links"><li><a href="service-areas.html">Castle Bromwich</a></li><li><a href="service-areas.html">Birmingham</a></li><li><a href="service-areas.html">Solihull</a></li><li><a href="service-areas.html">West Midlands</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><span>© 2024 Mr Bee Plumbing | 429 Chester Road, Castle Bromwich, Birmingham B36 0JJ</span><span>mrbeeplumbing.co.uk</span></div>
+  </div>
+</footer>
+
+<div class="mobile-sticky-cta"><a href="tel:07810173271" class="btn btn-primary">📞 Call 07810 173271</a></div>
+
+<script src="assets/js/main.js"></script>
+<script>
+/* ========================================
+   AI PHOTO DIAGNOSIS — Gemini Vision
+   ======================================== */
+
+const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
+
+const SYSTEM_PROMPT = `You are an expert UK plumbing and heating engineer with 20+ years of experience. A homeowner has uploaded a photo of a possible plumbing or heating problem.
+
+Analyse the image carefully. Respond ONLY with a valid JSON object in exactly this format (no markdown, no extra text):
+{
+  "issue_found": true,
+  "problem_title": "Short clear title of the problem",
+  "severity": "Low",
+  "severity_reason": "Brief reason for this severity rating",
+  "what_i_see": "Detailed description of what is visible in the photo and why it indicates a problem",
+  "likely_causes": ["Cause one", "Cause two", "Cause three"],
+  "immediate_steps": ["Step one the homeowner should take now", "Step two", "Step three"],
+  "professional_required": true,
+  "call_urgency": "When and how urgently to call a plumber",
+  "job_type": "Type of repair job this would be"
+}
+
+Severity must be one of: "Low" (minor, can wait a week+), "Medium" (fix within a few days), "High" (fix within 24 hours), "Emergency" (act immediately, risk of flooding or no heating).
+
+If no plumbing or heating issue is clearly visible in the photo, set "issue_found" to false, explain in "what_i_see", and set "problem_title" to "No Plumbing Issue Detected".
+
+Respond ONLY with the raw JSON object.`;
+
+// ── API Key management ──
+const keyInput = document.getElementById('api-key-input');
+const keySaveBtn = document.getElementById('api-key-save');
+const keyStatus = document.getElementById('api-key-status');
+
+function getApiKey() { return localStorage.getItem('mrbeeplumbing_gemini_key') || ''; }
+
+function updateKeyStatus() {
+  const key = getApiKey();
+  if (key) {
+    keyStatus.textContent = '✓ API key saved';
+    keyStatus.className = 'api-key-status saved';
+    keyInput.placeholder = '••••••••••••••••••••••••••••••';
+  } else {
+    keyStatus.textContent = '⚠ No API key saved yet';
+    keyStatus.className = 'api-key-status missing';
+  }
+}
+
+keySaveBtn.addEventListener('click', () => {
+  const val = keyInput.value.trim();
+  if (!val) { keyStatus.textContent = '✗ Please paste your API key first'; keyStatus.className = 'api-key-status missing'; return; }
+  localStorage.setItem('mrbeeplumbing_gemini_key', val);
+  keyInput.value = '';
+  updateKeyStatus();
+});
+
+updateKeyStatus();
+
+// ── File Upload ──
+const fileInput = document.getElementById('file-input');
+const uploadZone = document.getElementById('upload-zone');
+const previewWrap = document.getElementById('preview-wrap');
+const previewImg = document.getElementById('preview-img');
+const analyzeBtn = document.getElementById('analyze-btn');
+const clearBtn = document.getElementById('clear-btn');
+
+let currentFileBase64 = null;
+let currentMimeType = null;
+
+function showPreview(file) {
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    previewImg.src = e.target.result;
+    previewWrap.classList.add('visible');
+    uploadZone.style.display = 'none';
+
+    const base64 = e.target.result.split(',')[1];
+    currentFileBase64 = base64;
+    currentMimeType = file.type || 'image/jpeg';
+  };
+  reader.readAsDataURL(file);
+}
+
+fileInput.addEventListener('change', (e) => {
+  if (e.target.files[0]) showPreview(e.target.files[0]);
+});
+
+uploadZone.addEventListener('dragover', (e) => { e.preventDefault(); uploadZone.classList.add('drag-over'); });
+uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
+uploadZone.addEventListener('drop', (e) => {
+  e.preventDefault();
+  uploadZone.classList.remove('drag-over');
+  if (e.dataTransfer.files[0]) showPreview(e.dataTransfer.files[0]);
+});
+
+clearBtn.addEventListener('click', () => {
+  previewWrap.classList.remove('visible');
+  uploadZone.style.display = '';
+  previewImg.src = '';
+  fileInput.value = '';
+  currentFileBase64 = null;
+  resetResults();
+});
+
+// ── UI helpers ──
+function resetResults() {
+  document.getElementById('results-empty').style.display = '';
+  document.getElementById('results-loading').classList.remove('visible');
+  document.getElementById('results-content').classList.remove('visible');
+  document.getElementById('results-error').classList.remove('visible');
+  ['step-1','step-2','step-3','step-4'].forEach(id => {
+    const el = document.getElementById(id);
+    el.classList.remove('active','done');
+  });
+}
+
+function setLoadingStep(stepNum) {
+  for (let i = 1; i <= 4; i++) {
+    const el = document.getElementById(`step-${i}`);
+    if (i < stepNum) el.className = 'loading-step done';
+    else if (i === stepNum) el.className = 'loading-step active';
+    else el.className = 'loading-step';
+  }
+}
+
+function showError(msg) {
+  document.getElementById('results-loading').classList.remove('visible');
+  document.getElementById('results-error').classList.add('visible');
+  document.getElementById('error-msg').textContent = msg;
+}
+
+function getSeverityClass(sev) {
+  const map = { 'Low':'low', 'Medium':'medium', 'High':'high', 'Emergency':'emergency' };
+  return map[sev] || 'medium';
+}
+
+function getSeverityEmoji(sev) {
+  const map = { 'Low':'🟢', 'Medium':'🟡', 'High':'🔴', 'Emergency':'🚨' };
+  return map[sev] || '🟡';
+}
+
+function renderResults(data) {
+  // Severity badge
+  const badge = document.getElementById('severity-badge');
+  badge.textContent = `${getSeverityEmoji(data.severity)} ${data.severity} Severity`;
+  badge.className = `severity-badge ${getSeverityClass(data.severity)}`;
+
+  document.getElementById('problem-title').textContent = data.problem_title || '—';
+  document.getElementById('result-what-i-see').textContent = data.what_i_see || '—';
+
+  // Causes list
+  const causesList = document.getElementById('result-causes');
+  causesList.innerHTML = '';
+  (data.likely_causes || []).forEach(c => {
+    const li = document.createElement('li');
+    li.textContent = c;
+    causesList.appendChild(li);
+  });
+
+  // Immediate steps list
+  const stepsList = document.getElementById('result-steps');
+  stepsList.innerHTML = '';
+  (data.immediate_steps || []).forEach(s => {
+    const li = document.createElement('li');
+    li.textContent = s;
+    stepsList.appendChild(li);
+  });
+
+  // Professional banner
+  const proBanner = document.getElementById('pro-banner');
+  if (data.professional_required) {
+    proBanner.style.display = '';
+    document.getElementById('pro-urgency').textContent = data.call_urgency || 'A professional plumber should inspect this.';
+  } else {
+    proBanner.style.display = 'none';
+  }
+
+  document.getElementById('results-loading').classList.remove('visible');
+  document.getElementById('results-content').classList.add('visible');
+}
+
+// ── Main Analysis ──
+analyzeBtn.addEventListener('click', async () => {
+  const apiKey = getApiKey();
+  if (!apiKey) {
+    alert('Please save your Gemini API key first using the setup section above.');
+    document.getElementById('api-key-input').focus();
+    return;
+  }
+  if (!currentFileBase64) { alert('Please upload a photo first.'); return; }
+
+  // Reset and show loading
+  document.getElementById('results-empty').style.display = 'none';
+  document.getElementById('results-content').classList.remove('visible');
+  document.getElementById('results-error').classList.remove('visible');
+  document.getElementById('results-loading').classList.add('visible');
+  analyzeBtn.disabled = true;
+
+  // Animate loading steps
+  setLoadingStep(1);
+  await new Promise(r => setTimeout(r, 400));
+  setLoadingStep(2);
+  await new Promise(r => setTimeout(r, 500));
+  setLoadingStep(3);
+
+  try {
+    const response = await fetch(`${GEMINI_URL}?key=${apiKey}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{
+          parts: [
+            { text: SYSTEM_PROMPT },
+            { inline_data: { mime_type: currentMimeType, data: currentFileBase64 } }
+          ]
+        }],
+        generationConfig: { temperature: 0.2, maxOutputTokens: 1024 }
+      })
+    });
+
+    if (!response.ok) {
+      const errData = await response.json().catch(() => ({}));
+      const msg = errData?.error?.message || `API error ${response.status}`;
+      if (response.status === 400 && msg.includes('API_KEY')) {
+        showError('Invalid API key. Please check your key in the setup section above.');
+      } else {
+        showError(`AI error: ${msg}`);
+      }
+      analyzeBtn.disabled = false;
+      return;
+    }
+
+    setLoadingStep(4);
+    await new Promise(r => setTimeout(r, 400));
+
+    const result = await response.json();
+    const text = result?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+
+    // Strip markdown code fences if present
+    const cleaned = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+
+    let data;
+    try {
+      data = JSON.parse(cleaned);
+    } catch {
+      showError('The AI returned an unexpected response. Please try again with a clearer photo.');
+      analyzeBtn.disabled = false;
+      return;
+    }
+
+    renderResults(data);
+  } catch (err) {
+    showError('Network error. Please check your internet connection and try again.');
+    console.error(err);
+  }
+
+  analyzeBtn.disabled = false;
+});
+</script>
+</body>
+</html>
